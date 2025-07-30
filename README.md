@@ -9,8 +9,9 @@ The code of "[SNR：One Single Network for Image Steganography with Robust Post-
 
 ## Dataset
 - In this paper, we use the commonly used dataset ImageNet, DIV2K, COCO and 102Flower.
+- We provide a pre-trained model trained using ImageNet. In (https://drive.google.com/file/d/1rD48_UWPPxCEmZDYy9WUHaWVbjkuFCc9/view?usp=drive_link)
 - Run `sh scripts/train.py ` for training.
-- Run `sh scripts/test.py ` for testing.
+- Run `sh scripts/test.py ` for testing. Correctly set the path and checkpoint of the pre-trained model in test.sh. The path must be consistent with the path automatically generated after training.
 
 # Citation
 If our work is useful for your research, please consider citing:
