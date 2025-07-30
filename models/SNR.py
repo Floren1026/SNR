@@ -513,6 +513,8 @@ class WaveletBlock(nn.Module):
         
         self.dwt = DWT_2D(wave='haar')
         self.iwt = IDWT_2D(wave='haar')
+        # self.dwt = DWT()
+        # self.iwt = IWT()
         
         self.flatten = Flatten(embed_dim=dim, norm_layer=None)
 
@@ -572,7 +574,7 @@ class UISTransformer(nn.Module):
     """
 
     def __init__(self, img_size=224, patch_size=4, in_chans=3, out_chans=3,
-                 embed_dim=96, depths=[2, 2, 6, 2], num_heads=[3, 6, 12, 24],
+                 embed_dim=36, depths=[2, 2, 6, 2], num_heads=[3, 6, 12, 24],
                  window_size=7, mlp_ratio=4., qkv_bias=True, qk_scale=None,
                  drop_rate=0., attn_drop_rate=0., drop_path_rate=0.1,
                  norm_layer=nn.LayerNorm, patch_norm=True, **kwargs):
@@ -694,12 +696,12 @@ class UISTransformer(nn.Module):
 
         x_out = self.deepExtra(x_in)
 
+        # x_out = self.extra_conv(x_out)
+
         # residual connection
         res = x_in + x_out
 
         x = self.conv_last(torch.cat((res, x), 1))
-
-        # normalization
         x = self.norm(x)
 
         return x
