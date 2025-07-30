@@ -1,0 +1,1 @@
+CUDA_VISIBLE_DEVICES=0 python3 test.py --imageSize 256 --batch_stegs 1 --num_training 1 --num_secret 1 --Model_dir '' --model ''
