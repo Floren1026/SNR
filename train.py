@@ -12,7 +12,7 @@ from utils.model_util import *
 from data.datasets import Mydata
 from utils.calculate_PSNR_SSIM import *
 from models.wavelet import DWT_2D, IDWT_2D
-from models.UNST_wavelet import UISTransformer as UISTnet
+from models.SNR import UISTransformer as UISTnet
 
 
 parser = argparse.ArgumentParser()
