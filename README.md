@@ -1,6 +1,13 @@
 # SNR
 The code of "SNR：One Single Network for Image Steganography with Robust Post-Save Recovery"
 
+# 🚀 Getting Started
+
+## Dependencies and Installation
+- Python 3.10.13 (Recommend to use [Anaconda](https://www.anaconda.com/download/#linux)).
+- [PyTorch = 2.1.2](https://pytorch.org/) .
+
+
 # Citation
 If our work is useful for your research, please consider citing:
 
@@ -14,3 +21,6 @@ If our work is useful for your research, please consider citing:
   publisher={Elsevier}
 }
 ```
+
+# Acknowledgement
+Part of our SNR framework is referred to [Swin Transformer](https://github.com/microsoft/Swin-Transformer) and [UDH](https://github.com/ChaoningZhang/Universal-Deep-Hiding). We thank all the contributors for open-sourcing.
