@@ -1,0 +1,2 @@
+CUDA_VISIBLE_DEVICES=1 python3 train.py --imageSize 224 --batch_stegs 2 --num_secret 1  
+# --train_continue True  --trained_epochs 10 --Model_dir '2024-09-08_16:36:30_128_0.0003_2_0.75_0.75_l2_1colorIn1color_lab20231-System-Product-Name' --model 'checkpoint_010.pt'
