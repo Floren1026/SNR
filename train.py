@@ -178,10 +178,10 @@ def train(trainLoader, epoch, Net, criterion):
     TotalLosses = AverageMeter()  # Hloss + β*Rloss + hl*hiding_low + rl*revealing_low
     Hdiff = AverageMeter()
     Rdiff = AverageMeter()
-    PSNR_C = AverageMeter()
-    PSNR_S = AverageMeter()
-    SSIM_C = AverageMeter()
-    SSIM_S = AverageMeter()
+    # PSNR_C = AverageMeter()
+    # PSNR_S = AverageMeter()
+    # SSIM_C = AverageMeter()
+    # SSIM_S = AverageMeter()
 
     # switch to train mode
     Net.train()
@@ -192,8 +192,7 @@ def train(trainLoader, epoch, Net, criterion):
 
         data_time.update(time.time() - start_time)
 
-        cover_imgv, steg_img, secret_imgv_r, rev_img, errH, errR, H_low_err, R_low_err, diffH, diffR, \
-        psnr_c, ssim_c, psnr_s, ssim_s = steg(args, cover_img, secret_img, Net, criterion)
+        cover_imgv, steg_img, secret_imgv_r, rev_img, errH, errR, H_low_err, R_low_err, diffH, diffR = steg(args, cover_img, secret_img, Net, criterion)
 
         # Loss function
         err_total = errH + args.beta_R * errR + args.beta_hl * H_low_err + args.beta_rl * R_low_err
@@ -205,10 +204,10 @@ def train(trainLoader, epoch, Net, criterion):
         H_low_losses.update(H_low_err.item(), args.batch_stegs*args.num_cover)
         R_low_losses.update(R_low_err.item(), args.batch_stegs*args.num_secret)
         TotalLosses.update(err_total.item(), args.batch_stegs*(args.num_cover+args.num_secret))
-        PSNR_C.update(psnr_c)
-        PSNR_S.update(psnr_s)
-        SSIM_C.update(ssim_c)
-        SSIM_S.update(ssim_s)
+        # PSNR_C.update(psnr_c)
+        # PSNR_S.update(psnr_s)
+        # SSIM_C.update(ssim_c)
+        # SSIM_S.update(ssim_s)
         
         optimizer.zero_grad()
         err_total.backward()
@@ -218,9 +217,9 @@ def train(trainLoader, epoch, Net, criterion):
         batch_time.update(time.time() - start_time)
         start_time = time.time()
 
-        log = '[%d/%d][%d/%d]\tLoss_H: %.6f Loss_R: %.6f L1_H_diff: %.4f L1_R_diff: %.4f psnr_ssim_c: %.4f/%.4f psnr_ssim_s: %.4f/%.4f Loss_sum: %.6f \tdatatime: %.6f \tbatchtime: %.6f' % (
+        log = '[%d/%d][%d/%d]\tLoss_H: %.6f Loss_R: %.6f L1_H_diff: %.4f L1_R_diff: %.4f Loss_sum: %.6f \tdatatime: %.6f \tbatchtime: %.6f' % (
             epoch, args.epochs, i, args.iters_epochs,
-            Hlosses.val, Rlosses.val, Hdiff.val, Rdiff.val, PSNR_C.val, SSIM_C.val, PSNR_S.val, SSIM_S.val, TotalLosses.val, data_time.val, batch_time.val)
+            Hlosses.val, Rlosses.val, Hdiff.val, Rdiff.val, TotalLosses.val, data_time.val, batch_time.val)
 
         if i % args.logFrequency == 0:
             print(log)
@@ -232,8 +231,8 @@ def train(trainLoader, epoch, Net, criterion):
         if i == args.iters_epochs-1:
             break
 
-    train_log = "Training[%d] Hloss= %.6f\tRloss= %.6f\tHdiff= %.4f\tRdiff= %.4f\tpsnr_ssim_c= %.4f/%.4f\tpsnr_ssim_s= %.4f/%.4f\tlr= %.6f\t Epoch time= %.4f" % (
-        epoch, Hlosses.avg, Rlosses.avg, Hdiff.avg, Rdiff.avg, PSNR_C.avg, SSIM_C.avg, PSNR_S.avg, SSIM_S.avg, optimizer.param_groups[0]['lr'], batch_time.sum)
+    train_log = "Training[%d] Hloss= %.6f\tRloss= %.6f\tHdiff= %.4f\tRdiff= %.4f\tlr= %.6f\t Epoch time= %.4f" % (
+        epoch, Hlosses.avg, Rlosses.avg, Hdiff.avg, Rdiff.avg, optimizer.param_groups[0]['lr'], batch_time.sum)
     
     print_log(train_log, logPath)
 
@@ -246,10 +245,10 @@ def train(trainLoader, epoch, Net, criterion):
     writer.add_scalar('train/total_loss', TotalLosses.avg, epoch)    
     writer.add_scalar('train/H_diff', Hdiff.avg, epoch)
     writer.add_scalar('train/R_diff', Rdiff.avg, epoch)
-    writer.add_scalar('train/psnr_c', PSNR_C.avg, epoch)
-    writer.add_scalar('train/ssim_c', SSIM_C.avg, epoch)
-    writer.add_scalar('train/psnr_s', PSNR_S.avg, epoch)
-    writer.add_scalar('train/ssim_s', SSIM_S.avg, epoch)
+    # writer.add_scalar('train/psnr_c', PSNR_C.avg, epoch)
+    # writer.add_scalar('train/ssim_c', SSIM_C.avg, epoch)
+    # writer.add_scalar('train/psnr_s', PSNR_S.avg, epoch)
+    # writer.add_scalar('train/ssim_s', SSIM_S.avg, epoch)
 
     return Hdiff.avg, Rdiff.avg, TotalLosses.avg
 
@@ -264,10 +263,10 @@ def validation(valLoader, epoch, Net, criterion):
     TotalLosses = AverageMeter()
     Hdiff = AverageMeter()
     Rdiff = AverageMeter()
-    PSNR_C = AverageMeter()
-    PSNR_S = AverageMeter()
-    SSIM_C = AverageMeter()
-    SSIM_S = AverageMeter()
+    # PSNR_C = AverageMeter()
+    # PSNR_S = AverageMeter()
+    # SSIM_C = AverageMeter()
+    # SSIM_S = AverageMeter()
 
 
     start_time = time.time()
@@ -277,8 +276,7 @@ def validation(valLoader, epoch, Net, criterion):
 
         for i, ((cover_img, cover_target), (secret_img, secret_target)) in enumerate(valLoader, 0):
 
-            cover_imgv, steg_img, secret_imgv_r, rev_img, errH, errR, H_low_err, R_low_err, diffH, \
-            diffR, psnr_c, ssim_c, psnr_s, ssim_s = steg(args, cover_img, secret_img, Net, criterion)
+            cover_imgv, steg_img, secret_imgv_r, rev_img, errH, errR, H_low_err, R_low_err, diffH, diffR = steg(args, cover_img, secret_img, Net, criterion)
 
             # Loss function
             err_total = errH + args.beta_R * errR + args.beta_hl * H_low_err + args.beta_rl * R_low_err
@@ -290,10 +288,10 @@ def validation(valLoader, epoch, Net, criterion):
             Hdiff.update(diffH.item(), args.batch_stegs*args.num_cover)
             Rdiff.update(diffR.item(), args.batch_stegs*args.num_secret)  
             TotalLosses.update(err_total.item(), args.batch_stegs*(args.num_cover+args.num_secret))
-            PSNR_C.update(psnr_c)
-            PSNR_S.update(psnr_s)
-            SSIM_C.update(ssim_c)
-            SSIM_S.update(ssim_s)
+            # PSNR_C.update(psnr_c)
+            # PSNR_S.update(psnr_s)
+            # SSIM_C.update(ssim_c)
+            # SSIM_S.update(ssim_s)
 
             if i == 0:
                 save_result_pic(args, cover_imgv, steg_img.data, secret_imgv_r, rev_img.data, epoch, i, args.validationpics)
@@ -303,8 +301,8 @@ def validation(valLoader, epoch, Net, criterion):
 
     val_time = time.time() - start_time
     
-    val_log = "validation[%d] val_Hloss = %.6f\t val_Rloss = %.6f\t val_Hdiff = %.4f\t val_Rdiff=%.4f\t psnr_ssim_c= %.4f/%.4f\tpsnr_ssim_s= %.4f/%.4f\t validation time=%.2f" % (
-        epoch, Hlosses.avg, Rlosses.avg, Hdiff.avg, Rdiff.avg, PSNR_C.avg, SSIM_C.avg, PSNR_S.avg, SSIM_S.avg, val_time)
+    val_log = "validation[%d] val_Hloss = %.6f\t val_Rloss = %.6f\t val_Hdiff = %.4f\t val_Rdiff=%.4f\t validation time=%.2f" % (
+        epoch, Hlosses.avg, Rlosses.avg, Hdiff.avg, Rdiff.avg, val_time)
     print_log(val_log, logPath)
 
 
@@ -315,10 +313,10 @@ def validation(valLoader, epoch, Net, criterion):
     writer.add_scalar('validation/total_loss', TotalLosses.avg, epoch) 
     writer.add_scalar('validation/H_diff', Hdiff.avg, epoch)
     writer.add_scalar('validation/R_diff', Rdiff.avg, epoch)
-    writer.add_scalar('validation/psnr_c', PSNR_C.avg, epoch)
-    writer.add_scalar('validation/ssim_c', SSIM_C.avg, epoch)
-    writer.add_scalar('validation/psnr_s', PSNR_S.avg, epoch)
-    writer.add_scalar('validation/ssim_s', SSIM_S.avg, epoch)
+    # writer.add_scalar('validation/psnr_c', PSNR_C.avg, epoch)
+    # writer.add_scalar('validation/ssim_c', SSIM_C.avg, epoch)
+    # writer.add_scalar('validation/psnr_s', PSNR_S.avg, epoch)
+    # writer.add_scalar('validation/ssim_s', SSIM_S.avg, epoch)
 
     print(
         "#################################################### validation end ########################################################")
@@ -376,11 +374,12 @@ def steg(args, cover_img, secret_img, Net, criterion):
     diffH = (steg_img - cover_imgv).abs().mean()*255
     diffR = (rev_img - secret_imgv_r).abs().mean()*255
 
-    apd, ssim, psnr_c, ssim_c = tensor_psnr_ssim(cover_imgv, steg_img)
-    apd, ssim, psnr_s, ssim_s = tensor_psnr_ssim(secret_imgv_r, rev_img)
+    # apd, ssim, psnr_c, ssim_c = tensor_psnr_ssim(cover_imgv, steg_img)
+    # apd, ssim, psnr_s, ssim_s = tensor_psnr_ssim(secret_imgv_r, rev_img)
 
     return cover_imgv, steg_img, secret_imgv_r, rev_img, errH, errR, hiding_low_err, \
-        revealing_low_err, diffH, diffR, psnr_c, ssim_c, psnr_s, ssim_s
+        revealing_low_err, diffH, diffR
+  # \, psnr_c, ssim_c, psnr_s, ssim_s
 
 
 if __name__ == '__main__':
