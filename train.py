@@ -130,17 +130,17 @@ def main():
 
     train_loader_cover = Mydata(args, traindir, batch_size_C)
     train_loader_secret = Mydata(args, traindir, batch_size_S)
-    trainLoader = zip(train_loader_cover, train_loader_secret)
 
     val_loader_cover = Mydata(args, valdir, batch_size_C)
     val_loader_secret = Mydata(args, valdir, batch_size_S)
-    valLoader = zip(val_loader_cover, val_loader_secret)
 
 
     ##################  start to training  ##################
     print_log("............................ start to training ...........................", logPath)
     smallestLoss = 10000
     for epoch in range(args.epochs):
+        trainLoader = zip(train_loader_cover, train_loader_secret)
+        valLoader = zip(val_loader_cover, val_loader_secret)
         epoch = epoch + args.trained_epochs
         
         train(trainLoader, epoch, Net=Net, criterion=criterion)
